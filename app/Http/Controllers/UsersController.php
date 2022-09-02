@@ -14,11 +14,16 @@ class UsersController extends BaseController
 
     public function getUsersWithName(string $name) {
         $user = new User();
-        return $user->filter($user, 'name', $name, '=')->get();
+        return $user->scopeFilter($user, 'name', $name, '=')->get();
     }
 
     public function getUsersWithProfile(Profile $profile) {
         $user = new User();
-        return User::filter($user, User::getTableName() . 'profile_id', $profile->id, 'in')->get();
+        return $user->scopeFilter($user, User::getTableName() . 'profile_id', $profile->id, 'in')->get();
+    }
+
+    public function getUsersWithEmailWord(string $word) {
+        $user = new User();
+        return $user->scopeFilter($user, 'email', $word, 'like')->get();
     }
 }
